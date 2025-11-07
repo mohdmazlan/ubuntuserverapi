@@ -1,0 +1,50 @@
+# Dependencies
+vendor/
+node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment & Config
+.env
+.env.local
+.env.production
+config/config.local.php
+config/config.php
+
+# Private docs
+README.md
+README_PRIVATE.md
+
+# Logs
+*.log
+*.cache
+.phpunit.result.cache
+
+# Composer
+composer.lock
+composer.phar
+
+# Cloudflare
+.cloudflared/
+*.json
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Sensitive
+secrets/
+private/
+*.key
+*.pem
+*.crt

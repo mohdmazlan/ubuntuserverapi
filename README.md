@@ -166,30 +166,30 @@ www-data ALL=(ALL) NOPASSWD: /bin/systemctl
 
 ```bash
 # Get system information
-curl https://panel.mikael.my/api/system/info
+curl https://your-domain.com/api/system/info
 
 # List processes
-curl https://panel.mikael.my/api/processes?limit=10
+curl https://your-domain.com/api/processes?limit=10
 
 # Get service status
-curl https://panel.mikael.my/api/services/nginx
+curl https://your-domain.com/api/services/nginx
 
 # Start a service
-curl -X POST https://panel.mikael.my/api/services/nginx/start
+curl -X POST https://your-domain.com/api/services/nginx/start
 
 # Kill a process
-curl -X DELETE https://panel.mikael.my/api/processes/1234
+curl -X DELETE https://your-domain.com/api/processes/1234
 
 # Get disk usage
-curl https://panel.mikael.my/api/disk/usage
+curl https://your-domain.com/api/disk/usage
 
 # Ping a host
-curl https://panel.mikael.my/api/network/ping?host=8.8.8.8&count=3
+curl https://your-domain.com/api/network/ping?host=8.8.8.8&count=3
 ```
 
 ### Using the React Dashboard
 
-1. Open your browser and navigate to `https://panel.mikael.my/`
+1. Open your browser and navigate to `https://your-domain.com/`
 2. The dashboard will automatically load and connect to the API
 3. Use the navigation tabs to switch between different management views
 4. Click buttons to perform actions (start/stop services, kill processes, etc.)
@@ -198,12 +198,12 @@ curl https://panel.mikael.my/api/network/ping?host=8.8.8.8&count=3
 
 ```javascript
 // Get system info
-fetch('https://panel.mikael.my/api/system/info')
+fetch('https://your-domain.com/api/system/info')
   .then(response => response.json())
   .then(data => console.log(data));
 
 // Start a service
-fetch('https://panel.mikael.my/api/services/nginx/start', {
+fetch('https://your-domain.com/api/services/nginx/start', {
   method: 'POST'
 })
   .then(response => response.json())
@@ -274,15 +274,15 @@ ubuntuserverapi/
 
 ## URL Structure
 
-- **Frontend Dashboard**: `https://panel.mikael.my/` (via Cloudflare Tunnel)
-- **API Endpoints**: `https://panel.mikael.my/api/*` (via Cloudflare Tunnel)
+- **Frontend Dashboard**: `https://your-domain.com/` (via Cloudflare Tunnel)
+- **API Endpoints**: `https://your-domain.com/api/*` (via Cloudflare Tunnel)
 - **Local Nginx**: `http://localhost:80` (HTTP only, not exposed to internet)
 
 The `nginx.conf` routes:
 - `/api/*` requests to the PHP API (`public/api/index.php`)
 - All other requests to the React frontend (`public/index.html`)
 
-**Note:** Nginx runs on HTTP locally. Cloudflare Tunnel provides SSL/TLS encryption and exposes the site securely at `https://panel.mikael.my`.
+**Note:** Nginx runs on HTTP locally. Cloudflare Tunnel provides SSL/TLS encryption and exposes the site securely at `https://your-domain.com`.
 
 ## Security Considerations
 

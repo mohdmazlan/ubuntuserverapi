@@ -5,7 +5,7 @@
 The following files contain your personal configuration and will NOT be pushed to GitHub:
 
 ✅ **Protected (in .gitignore):**
-- `README.md` - Your personal setup guide (panel.mikael.my)
+- `README.md` - Your personal setup guide (your-domain.com)
 - `README_PRIVATE.md` - Private notes
 - `config/config.php` - Your actual configuration
 - `.env` files
@@ -49,7 +49,7 @@ git push -u origin main
 ### 4. Verify
 
 Check your GitHub repository - it should NOT contain:
-- Your domain (panel.mikael.my) 
+- Your domain (your-domain.com) 
 - Your actual config/config.php
 - Any cloudflare credentials
 - Private README files

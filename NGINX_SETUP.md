@@ -137,7 +137,7 @@ sudo chmod -R 755 /var/www/html/ubuntuserverapi
 The nginx.conf includes CORS headers. If you need to restrict origins, modify:
 
 ```nginx
-add_header Access-Control-Allow-Origin "https://panel.mikael.my" always;
+add_header Access-Control-Allow-Origin "https://your-domain.com" always;
 ```
 
 ## Performance Optimization
@@ -200,7 +200,7 @@ tunnel: <TUNNEL-ID>
 credentials-file: /root/.cloudflared/<TUNNEL-ID>.json
 
 ingress:
-  - hostname: panel.mikael.my
+  - hostname: your-domain.com
     service: http://localhost:80
   - service: http_status:404
 ```

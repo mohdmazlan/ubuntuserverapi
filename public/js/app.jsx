@@ -393,6 +393,141 @@ function Network() {
     );
 }
 
+// SSH Terminal Component
+function SSHTerminal() {
+    const [command, setCommand] = useState('');
+    const [output, setOutput] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [terminalInfo, setTerminalInfo] = useState(null);
+
+    useEffect(() => {
+        loadTerminalInfo();
+    }, []);
+
+    const loadTerminalInfo = async () => {
+        try {
+            const data = await api.get('/ssh/terminal-info');
+            setTerminalInfo(data);
+        } catch (err) {
+            console.error('Failed to load terminal info:', err);
+        }
+    };
+
+    const executeCommand = async (e) => {
+        e.preventDefault();
+        if (!command.trim()) return;
+
+        setLoading(true);
+        try {
+            const result = await api.post('/ssh/execute', { command });
+            setOutput(prev => [...prev, {
+                command,
+                output: result.output,
+                success: result.success,
+                timestamp: new Date().toLocaleTimeString()
+            }]);
+            setCommand('');
+        } catch (err) {
+            setOutput(prev => [...prev, {
+                command,
+                output: err.message,
+                success: false,
+                timestamp: new Date().toLocaleTimeString()
+            }]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const clearTerminal = () => {
+        setOutput([]);
+    };
+
+    return (
+        <div>
+            {terminalInfo && (
+                <div className="card" style={{marginBottom: '20px'}}>
+                    <h3>Terminal Information</h3>
+                    <div className="card-content">
+                        <div className="stat-row">
+                            <span className="stat-label">User:</span>
+                            <span className="stat-value">{terminalInfo.user}</span>
+                        </div>
+                        <div className="stat-row">
+                            <span className="stat-label">Shell:</span>
+                            <span className="stat-value">{terminalInfo.shell}</span>
+                        </div>
+                        <div className="stat-row">
+                            <span className="stat-label">Current Directory:</span>
+                            <span className="stat-value">{terminalInfo.current_directory}</span>
+                        </div>
+                        <div className="stat-row">
+                            <span className="stat-label">Hostname:</span>
+                            <span className="stat-value">{terminalInfo.hostname}</span>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <div className="card">
+                <h3>Terminal Output</h3>
+                <div style={{
+                    background: '#1a1a1a',
+                    color: '#00ff00',
+                    padding: '15px',
+                    borderRadius: '8px',
+                    fontFamily: 'monospace',
+                    fontSize: '13px',
+                    minHeight: '300px',
+                    maxHeight: '500px',
+                    overflowY: 'auto',
+                    marginBottom: '15px'
+                }}>
+                    {output.length === 0 ? (
+                        <div style={{color: '#666'}}>Execute commands to see output...</div>
+                    ) : (
+                        output.map((item, idx) => (
+                            <div key={idx} style={{marginBottom: '15px', borderBottom: '1px solid #333', paddingBottom: '10px'}}>
+                                <div style={{color: '#00aaff', marginBottom: '5px'}}>
+                                    [{item.timestamp}] $ {item.command}
+                                </div>
+                                <pre style={{
+                                    margin: 0,
+                                    whiteSpace: 'pre-wrap',
+                                    color: item.success ? '#00ff00' : '#ff4444'
+                                }}>{item.output}</pre>
+                            </div>
+                        ))
+                    )}
+                </div>
+
+                <form onSubmit={executeCommand} style={{display: 'flex', gap: '10px'}}>
+                    <input
+                        type="text"
+                        value={command}
+                        onChange={(e) => setCommand(e.target.value)}
+                        placeholder="Enter command..."
+                        disabled={loading}
+                        style={{
+                            flex: 1,
+                            padding: '12px',
+                            borderRadius: '6px',
+                            border: '1px solid #ddd',
+                            fontFamily: 'monospace'
+                        }}
+                    />
+                    <button type="submit" className="btn btn-primary" disabled={loading}>
+                        {loading ? 'Executing...' : 'Execute'}
+                    </button>
+                    <button type="button" className="btn btn-warning" onClick={clearTerminal}>
+                        Clear
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
+}
+
 // Main App Component
 function App() {
     const [activeTab, setActiveTab] = useState('system');
@@ -402,7 +537,8 @@ function App() {
         { id: 'processes', label: '⚙️ Processes', component: Processes },
         { id: 'services', label: '🔧 Services', component: Services },
         { id: 'disk', label: '💾 Disk', component: Disk },
-        { id: 'network', label: '🌐 Network', component: Network }
+        { id: 'network', label: '🌐 Network', component: Network },
+        { id: 'ssh', label: '💻 Terminal', component: SSHTerminal }
     ];
 
     const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component;

@@ -12,6 +12,7 @@ use UbuntuServerAPI\Controllers\ServiceController;
 use UbuntuServerAPI\Controllers\DiskController;
 use UbuntuServerAPI\Controllers\UserController;
 use UbuntuServerAPI\Controllers\NetworkController;
+use UbuntuServerAPI\Controllers\SSHController;
 
 // Enable error reporting for development
 error_reporting(E_ALL);
@@ -71,6 +72,17 @@ $router->get('/api/network/routes', [NetworkController::class, 'routes']);
 $router->get('/api/network/listening-ports', [NetworkController::class, 'listeningPorts']);
 $router->get('/api/network/connections', [NetworkController::class, 'connections']);
 $router->get('/api/network/ping', [NetworkController::class, 'ping']);
+
+// SSH/Terminal routes
+$router->post('/api/ssh/execute', [SSHController::class, 'execute']);
+$router->post('/api/ssh/execute-multiple', [SSHController::class, 'executeMultiple']);
+$router->post('/api/ssh/execute-in-directory', [SSHController::class, 'executeInDirectory']);
+$router->post('/api/ssh/sudo', [SSHController::class, 'executeSudo']);
+$router->get('/api/ssh/terminal-info', [SSHController::class, 'getTerminalInfo']);
+$router->get('/api/ssh/list-directory', [SSHController::class, 'listDirectory']);
+$router->get('/api/ssh/read-file', [SSHController::class, 'readFile']);
+$router->get('/api/ssh/history', [SSHController::class, 'getHistory']);
+$router->get('/api/ssh/environment', [SSHController::class, 'getEnvironment']);
 
 // Health check route
 $router->get('/api/health', function() {

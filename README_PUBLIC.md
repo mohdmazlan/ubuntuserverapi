@@ -35,8 +35,8 @@ A comprehensive PHP-based RESTful API with React.js frontend for managing Ubuntu
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/ubuntuserverapi.git
-cd ubuntuserverapi
+git clone https://github.com/mohdmazlan/ubuntu-server-api.git
+cd ubuntu-server-api
 ```
 
 ### 2. Install Dependencies
